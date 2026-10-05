@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>השראה לעיצוב אתרים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f1ea; --surface:#fffdf9; --ink:#1f1a17; --muted:#7a6f66; --line:#e4dacd;
+  --accent:#c2410c; --accent-soft:#fde8dc; --heart:#e11d48;
+  --shadow:0 1px 2px rgba(60,40,20,.06),0 8px 24px rgba(60,40,20,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16120f; --surface:#211b17; --ink:#f3ebe3; --muted:#a79b90; --line:#3a312a;
+    --accent:#fb923c; --accent-soft:#3a2417; --heart:#fb7185;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Heebo,system-ui,sans-serif;line-height:1.5}
+.wrap{max-width:1280px;margin-inline:auto;padding-inline:16px}
+header.hero{padding-block:48px 24px}
+.eyebrow{font-size:.85rem;letter-spacing:.08em;color:var(--accent);font-weight:700}
+h1{font-family:"Frank Ruhl Libre",serif;font-weight:900;font-size:clamp(2.2rem,6vw,4rem);line-height:1.05;margin:.2em 0 .3em}
+.sub{color:var(--muted);max-width:60ch;margin:0}
+.bar{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-block-end:1px solid var(--line);padding-block:12px}
+.bar .wrap{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.search{flex:1 1 220px;min-width:0;padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);font:inherit}
+.search:focus{outline:2px solid var(--accent);outline-offset:1px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:8px 14px;border-radius:999px;font:inherit;font-size:.9rem;cursor:pointer;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip.liked[aria-pressed="true"]{background:var(--heart);border-color:var(--heart);color:#fff}
+.tools{display:flex;gap:8px;margin-inline-start:auto}
+.tool{border:1px dashed var(--line);background:transparent;color:var(--muted);padding:8px 12px;border-radius:10px;font:inherit;font-size:.85rem;cursor:pointer}
+.tool:hover{color:var(--ink);border-color:var(--ink)}
+.count{color:var(--muted);font-size:.9rem;padding-block:16px 4px}
+main{padding-block:8px 64px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .2s}
+.card:hover{transform:translateY(-3px)}
+.card.is-liked{border-color:var(--heart);box-shadow:0 0 0 1px var(--heart),var(--shadow)}
+.thumb{display:block;aspect-ratio:16/10;background:var(--accent-soft);overflow:hidden;position:relative}
+.thumb img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.thumb .ph{position:absolute;inset:0;display:grid;place-items:center;font-family:"Frank Ruhl Libre",serif;font-size:3rem;font-weight:900;color:var(--accent);opacity:.5}
+.heart{position:absolute;inset-block-start:10px;inset-inline-end:10px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:#444;cursor:pointer;display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.2);transition:transform .15s}
+.heart:hover{transform:scale(1.1)}
+.heart svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2}
+.heart[aria-pressed="true"]{background:var(--heart);color:#fff}
+.heart[aria-pressed="true"] svg{fill:currentColor}
+.info{padding:12px 16px 16px;display:flex;flex-direction:column;gap:6px}
+.host{font-weight:700;font-size:1.05rem;direction:ltr;text-align:start;overflow-wrap:anywhere}
+.path{color:var(--muted);font-size:.8rem;direction:ltr;text-align:start;overflow-wrap:anywhere}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:.75rem;padding:2px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:500}
+.open{margin-block-start:4px;color:var(--accent);font-weight:700;font-size:.9rem;text-decoration:none}
+.open:hover{text-decoration:underline}
+.empty{text-align:center;color:var(--muted);padding:64px 0}
+.toast{position:fixed;inset-block-end:20px;inset-inline:0;margin-inline:auto;width:max-content;max-width:90vw;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .25s}
+.toast.show{opacity:1}
+footer{color:var(--muted);font-size:.8rem;padding-block:0 32px}
+@media (max-width:600px){.tools{margin-inline-start:0;width:100%}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <div class="eyebrow">אוסף אישי · השראה</div>
+  <h1>השראה לעיצוב<br>ובניית אתרים</h1>
+  <p class="sub">אתרים חיים שנאספו משני הצ׳אטים: וורדפרס ואלמנטור, ווייב קודינג. סמני בלב את מה שאהבתם, והסימון נשמר בדפדפן.</p>
+</div></header>
+
+<div class="bar"><div class="wrap">
+  <input class="search" id="q" type="search" placeholder="חיפוש לפי כתובת…" aria-label="חיפוש">
+  <div class="chips" id="chips">
+    <button class="chip" data-cat="all" aria-pressed="true">הכל</button>
+    <button class="chip" data-cat="wp" aria-pressed="false">וורדפרס ואלמנטור</button>
+    <button class="chip" data-cat="vibe" aria-pressed="false">ווייב קודינג</button>
+    <button class="chip liked" id="likedOnly" aria-pressed="false">♥ אהבתי</button>
+  </div>
+  <div class="tools">
+    <button class="tool" id="exp">ייצוא האהובים</button>
+    <button class="tool" id="imp">ייבוא</button>
+    <input type="file" id="file" accept="application/json" hidden>
+  </div>
+</div></div>
+
+<main><div class="wrap">
+  <div class="count" id="count" aria-live="polite"></div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" hidden>לא נמצאו אתרים</div>
+</div></main>
+<div class="wrap"><footer>תצוגות מקדימות נטענות אוטומטית מהאתרים עצמם ולכן עשויות להתעכב או להיעדר. הלבבות נשמרים בדפדפן הזה בלבד. לגיבוי או לשימוש במכשיר אחר השתמשי בייצוא וייבוא.</footer></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const wp = [
+"https://responsivetesttool.com","https://yuvalshemesh.co.il","https://www.webs.co.il","https://genki.co.il","https://noab.co.il","https://up-grades.co.il","https://www.ezra-lemarpe.org","https://veredaviv.co.il/wp-content/uploads/2026/07/Touresimo_3.webp","https://raim-parking.ussl.co.il","https://smart-design.co.il/lot-sub/?ref=9720545328598","https://re-frame.co.il","https://melachoth.co.il","https://www.lovedby.ai","https://www.caramello.co.il","https://scoool.co.il/product/%d7%93%d7%95%d7%91%d7%93%d7%91%d7%9f","https://www.zakeke.com","https://www.stern-architecture.co.il","https://liavmatzri.co.il","https://tomerleshem-invest.co.il","https://markitcleanusa.com","https://theroseexperience.co.il","https://feldman-systems.co.il","https://gal-zaken.lovable.app","https://bgadv.co.il","https://tevelstudio.co.il"
+];
+const vibe = [
+"https://likids.pages.dev","https://readover.online","https://haim-ai.github.io/stone-site","https://share.pix.video/referral/7DIAW2IO","https://romema-boutique-zr6o.vercel.app","https://vortext.lovable.app","https://alainlevi.com","https://Laly-Rosenboim.is-best.net","https://jetliner.vercel.app","https://stoneliner.vercel.app","https://paneliner.com","https://nova-awakening.lovable.app","https://qucci-bar.lovable.app","https://tefillin4idf.org","https://id-preview--21f3ceb3-96d3-4000-9efb-fcc1cab4ef5c.lovable.app","https://miriam-israeli-editorial.lovable.app","https://liaevent.com","https://villa-maya.netlify.app","https://baronkaykov.com","https://kaykov.co.il","https://launch-lane-lover.lovable.app","https://bonito.co.il","https://hafontia.com/family/leon","https://erech-musaf.co.il","https://dudieventsproduction.lovable.app","https://ilaymeirdarkeno.com","https://romema-boutique-chi.vercel.app","https://paneliner.com/auth","https://recover-band.co.il","https://alefalefalef.co.il/font/ploni","https://tomerleshem-invest.co.il","https://victorgalam.github.io/frush-sushi","https://adler-creative.com","https://ofek-mortgage.lovable.app","https://math-maze-il.vercel.app","https://math-maze-il.vercel.app/landing.html","https://novamira.ai","https://liavwebdesign-spec.github.io/sinay-a7f3c9","https://liavwebdesign-spec.github.io/adidas-extazy/site/scroll.html","https://artful-waves-healing.lovable.app","https://liavwebdesign-spec.github.io/velox-kadens/site/scroll.html","https://paneliner.com/pricing","https://igud.kehilotcard.co.il","https://www.hedra.com/app/home","https://luma.com/hemwydny","https://yetzir-ai-solutions.vercel.app","https://nachmandaih.github.io/shevtech","https://www.grandpa-grills.co.il","https://light.nufar-digital.com/?x=1","https://www.shiftup.marketing","https://kol-ohr-search-9328.ai.studio","https://uniquemechanisms.com","https://brachiavini.com","https://kuroshio-web.vercel.app","https://mariannashapiro.co.il","https://flagy-nu.vercel.app","https://miriamisraeli.co.il","https://bynoyshou.com","https://rare-event-maker.lovable.app","https://kehilotcard.co.il","https://liavmatzri.co.il","https://aplonevva.wuaze.com","https://yesh-cash-flow.lovable.app","https://noyush.lovable.app","https://hiliraz.com","https://wallkin.vercel.app","https://liavwebdesign-spec.github.io/momentum-8noqdk","https://ashtrom-concept.vercel.app","https://gal-zaken.lovable.app","https://doodle-matic.vercel.app","https://gilautomates.vercel.app","https://gil-ai.vercel.app","https://logi.ac/maor"
+];
+const norm = u => u.replace(/\/$/,'').toLowerCase();
+const map = new Map();
+function add(u, cat){
+  const k = norm(u);
+  if(map.has(k)){ const it = map.get(k); if(!it.cats.includes(cat)) it.cats.push(cat); return; }
+  map.set(k,{url:u,key:k,cats:[cat]});
+}
+wp.forEach(u=>add(u,'wp')); vibe.forEach(u=>add(u,'vibe'));
+const items = [...map.values()].map(it=>{
+  let h; try{h=new URL(it.url);}catch(e){h={hostname:it.url,pathname:'',search:''}}
+  it.host = h.hostname.replace(/^www\./,'');
+  let p = decodeURIComponent(h.pathname||'')+(h.search||''); it.path = p==='/'?'':p;
+  it.isImg = /\.(webp|png|jpe?g|gif)$/i.test(h.pathname);
+  return it;
+});
+
+const STORE='design-inspiration-liked-v1';
+let liked = new Set();
+try{ liked = new Set(JSON.parse(localStorage.getItem(STORE)||'[]')); }catch(e){}
+const save = ()=>{ try{ localStorage.setItem(STORE, JSON.stringify([...liked])); }catch(e){} };
+
+let cat='all', onlyLiked=false, query='';
+const $ = s=>document.querySelector(s);
+const grid=$('#grid');
+const heartSvg='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.700 0 5.800 3.800 4.300 7.300C19.500 16.400 12 21 12 21z"/></svg>';
+const catName={wp:'וורדפרס / אלמנטור',vibe:'ווייב קודינג'};
+
+function thumbSrc(it){
+  return it.isImg ? it.url : 'https://s.wordpress.com/mshots/v1/'+encodeURIComponent(it.url)+'?w=640&h=400';
+}
+function card(it){
+  const el=document.createElement('article');
+  el.className='card'+(liked.has(it.key)?' is-liked':'');
+  el.dataset.key=it.key;
+  const on=liked.has(it.key);
+  const tags = it.cats.map(c=>`<span class="tag">${catName[c]}</span>`).join('') + (it.cats.length>1?'<span class="tag">בשני הצ׳אטים</span>':'');
+  el.innerHTML=`
+    <a class="thumb" href="${it.url}" target="_blank" rel="noopener" aria-label="פתיחת ${it.host}">
+      <div class="ph">${it.host[0].toUpperCase()}</div>
+      <img loading="lazy" alt="" src="${thumbSrc(it)}">
+    </a>
+    <button class="heart" aria-pressed="${on}" aria-label="סימון ${it.host} כאהוב">${heartSvg}</button>
+    <div class="info">
+      <div class="host">${it.host}</div>
+      ${it.path?`<div class="path">${it.path}</div>`:''}
+      <div class="tags">${tags}</div>
+      <a class="open" href="${it.url}" target="_blank" rel="noopener">פתיחת האתר ←</a>
+    </div>`;
+  el.querySelector('img').onerror=e=>e.target.remove();
+  el.querySelector('.heart').onclick=()=>toggle(it.key,el);
+  return el;
+}
+function toggle(k,el){
+  liked.has(k)?liked.delete(k):liked.add(k);
+  save();
+  const on=liked.has(k);
+  el.classList.toggle('is-liked',on);
+  el.querySelector('.heart').setAttribute('aria-pressed',on);
+  updateCount();
+  if(onlyLiked && !on) render();
+}
+function visible(it){
+  if(cat!=='all' && !it.cats.includes(cat)) return false;
+  if(onlyLiked && !liked.has(it.key)) return false;
+  if(query && !(it.url.toLowerCase().includes(query))) return false;
+  return true;
+}
+function render(){
+  grid.innerHTML='';
+  const list=items.filter(visible);
+  list.forEach(it=>grid.appendChild(card(it)));
+  $('#empty').hidden=list.length>0;
+  updateCount(list.length);
+}
+function updateCount(n){
+  if(n===undefined) n=items.filter(visible).length;
+  $('#count').textContent=`מוצגים ${n} מתוך ${items.length} אתרים · ${liked.size} אהובים`;
+}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),2200);}
+
+document.querySelectorAll('.chip[data-cat]').forEach(b=>b.onclick=()=>{
+  cat=b.dataset.cat;
+  document.querySelectorAll('.chip[data-cat]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  render();
+});
+$('#likedOnly').onclick=e=>{onlyLiked=!onlyLiked;e.currentTarget.setAttribute('aria-pressed',onlyLiked);render();};
+$('#q').oninput=e=>{query=e.target.value.trim().toLowerCase();render();};
+$('#exp').onclick=()=>{
+  const urls=items.filter(i=>liked.has(i.key)).map(i=>i.url);
+  const blob=new Blob([JSON.stringify(urls,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='liked-sites.json';a.click();
+  toast(`יוצאו ${urls.length} אתרים אהובים`);
+};
+$('#imp').onclick=()=>$('#file').click();
+$('#file').onchange=async e=>{
+  const f=e.target.files[0]; if(!f) return;
+  try{
+    const arr=JSON.parse(await f.text());
+    let n=0; arr.forEach(u=>{const k=norm(u); if(map.has(k)){liked.add(k);n++;}});
+    save(); render(); toast(`יובאו ${n} אתרים`);
+  }catch(err){toast('הקובץ לא תקין');}
+  e.target.value='';
+};
+render();
+</script>
+</body>
+</html>
